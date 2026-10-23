@@ -3,8 +3,8 @@
 Examples of building **micro-frontends (MFEs)** with [HtmlFlow](https://github.com/xmlet/HtmlFlow).
 
 The **shell** application (Quarkus, port `8080`) is built with HtmlFlow. 
-It defines the page layout,
-a header, a footer and the content between. Each zone of MFE is defined with `.mfe(cfg -> ...)`,
+It defines the page layout, a header, a footer and the content between. 
+Each zone of MFE is defined with `.mfe(cfg -> ...)`,
 and is loaded at runtime using the [HtmlFlow MFE engine](https://github.com/xmlet/HtmlFlow/tree/master/htmlflow-mfe-engine).
 
 The stack of the micro-frontends is the following:
@@ -73,7 +73,7 @@ echo "sha384-$(openssl dgst -sha384 -binary bike-service/src/main/resources/stat
 ```
 ## Running
 
-To run the examples you can run the docker compose file in the root directory:
+To run the web-shop application, you can use the docker compose file in the root directory:
 
 ```bash
 docker compose up --build
