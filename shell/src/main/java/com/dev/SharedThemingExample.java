@@ -9,9 +9,13 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.xmlet.htmlapifaster.EnumTypeScriptType;
 
 @Path("/shared-theming")
 public class SharedThemingExample {
+
+    private static final String HTMLFLOW_MFE_ENGINE =
+            "https://cdn.jsdelivr.net/gh/xmlet/HtmlFlow@master/htmlflow-mfe-engine/dist/htmlflow-mfe-engine.js";
 
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -19,8 +23,7 @@ public class SharedThemingExample {
         HtmlView<?> mfe = HtmlFlow.ViewFactory.builder().mfeEnabled(true).build().view(( page -> {
             page.html()
                     .head()
-                    .script().attrSrc("http://localhost:8080/base.js").__()
-                        .link().addAttr("rel", "stylesheet").addAttr("href", "http://localhost:8080/style.css").__()
+                    .script().attrSrc(HTMLFLOW_MFE_ENGINE).attrType(EnumTypeScriptType.MODULE).__()
                     .__()
 
                     .body()
@@ -43,7 +46,7 @@ public class SharedThemingExample {
                                     cfg.setMfeTriggersEventName("triggerCartEvent");
                                     cfg.setMfeScriptUrl("http://localhost:8081/js/mfe-bikes.js");
                                     cfg.setMfeStylingUrl("http://localhost:8081/css/style.css");
-//                                    cfg.setMfeSharedStylingUrl("http://localhost:8080/shared-theme.css");
+                                    cfg.setMfeSharedStylingUrl("http://localhost:8080/shared-theme.css");
                                 }).__()
                             .div()
                                 .mfe((cfg)-> {
@@ -53,7 +56,7 @@ public class SharedThemingExample {
                                     cfg.setMfeTriggersEventName("triggerOrderEvent");
                                     cfg.setMfeScriptUrl("http://localhost:8082/mfe-cart.js");
                                     cfg.setMfeStylingUrl("http://localhost:8082/style.css");
-//                                    cfg.setMfeSharedStylingUrl("http://localhost:8080/shared-theme.css");
+                                    cfg.setMfeSharedStylingUrl("http://localhost:8080/shared-theme.css");
                                 }).__()
                         .__()
                     .footer().addAttr("class", "footer")

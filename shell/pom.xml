@@ -56,9 +56,7 @@
         <dependency>
             <groupId>com.github.xmlet</groupId>
             <artifactId>htmlflow</artifactId>
-<!--     HERE correct version will be needed       -->
-            <version>5.0.5-SNAPSHOT</version>
-<!--            <scope>compile</scope>-->
+            <version>5.2.0</version>
         </dependency>
         <dependency>
             <groupId>io.reactivex.rxjava3</groupId>
