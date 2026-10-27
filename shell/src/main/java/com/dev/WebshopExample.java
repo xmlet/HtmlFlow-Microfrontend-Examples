@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.xmlet.htmlapifaster.EnumTypeScriptType;
 
-@Path("/catalog")
+@Path("/")
 public class WebshopExample {
 
     private static final String HTMLFLOW_MFE_ENGINE =
@@ -21,6 +21,7 @@ public class WebshopExample {
     private static final String ORDER_SERVICE = "http://localhost:8083";
 
     @GET
+    @Path("/catalog")
     @Produces(MediaType.TEXT_HTML)
     public Response getHtml() {
         HtmlView<?> mfe = HtmlFlow.ViewFactory.builder().mfeEnabled(true).build().view(( page -> {
