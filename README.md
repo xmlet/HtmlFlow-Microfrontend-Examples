@@ -14,6 +14,7 @@ The stack of the micro-frontends is the following:
 | Bikes | `bike-service` (Spring Boot) | [Thymeleaf](https://www.thymeleaf.org/) |
 | Cart | `cart-service` (Quarkus) | [Qute](https://quarkus.io/guides/qute) |
 | Order | `order-service` (Quarkus) | [HtmlFlow](https://github.com/xmlet/HtmlFlow) |
+| Bikes (CSR) | `react-service` (Node, port `8084`) | [React](https://react.dev/), client-side |
 
 ## Examples
 
@@ -26,6 +27,7 @@ Each one is represented by a class and after running the application can be acce
 | [`StreamingExample`](shell/src/main/java/com/dev/StreamingExample.java) | [`/pssr`](http://localhost:8080/pssr)                                                  | Progressive streaming of MFE content |
 | [`SharedThemingExample`](shell/src/main/java/com/dev/SharedThemingExample.java) | [`/shared-theming`](http://localhost:8080/shared-theming)                              | One shared theme for all MFEs |
 | [`ScriptIntegrityExample`](shell/src/main/java/com/dev/ScriptIntegrityExample.java) | [`/sri`](http://localhost:8080/sri)                                                    | Subresource Integrity for an MFE script |
+| [`CsrSsrExample`](shell/src/main/java/com/dev/CsrSsrExample.java) | [`/csr-ssr`](http://localhost:8080/csr-ssr) | A client-side rendered (React) MFE talking to an SSR MFE |
 
 ### Basic composition — `WebshopExample`
 
@@ -71,6 +73,23 @@ If `mfe-bikes.js` changes, regenerate the hash with:
 ```bash
 echo "sha384-$(openssl dgst -sha384 -binary bike-service/src/main/resources/static/js/mfe-bikes.js | openssl base64 -A)"
 ```
+
+### CSR + SSR — `CsrSsrExample`
+
+The Bikes MFE is re-implemented in React ([`react-service`](react-service)) and is **fully client-side
+rendered**, while the Cart MFE stays the server-side rendered Qute fragment. The React fragment
+(`/bikes/view`) is only a mount point. React renders the catalog in the engine's shadow root and fetches
+the bikes from the Java `bike-service` JSON API (`GET http://localhost:8081/bikes`).
+
+"Add to cart" emits `triggerCartEvent` with the same payload as the Thymeleaf Bikes MFE. The Cart MFE
+listens to it, adds the bike through the cart-service and the engine reloads its SSR fragment:
+
+```java
+cfg.setMfeUrlResource("http://localhost:8084/bikes/view");   // empty mount point
+cfg.setMfeScriptUrl("http://localhost:8084/js/mfe-bikes.js"); // React bundle (ES module)
+cfg.setMfeTriggersEventName("triggerCartEvent");
+```
+
 ## Running
 
 To run the web-shop application, you can use the docker compose file in the root directory:

@@ -1,7 +1,5 @@
 package com.dev;
 
-
-
 import htmlflow.HtmlFlow;
 import htmlflow.HtmlView;
 import jakarta.ws.rs.GET;
@@ -17,6 +15,10 @@ public class SharedThemingExample {
     private static final String HTMLFLOW_MFE_ENGINE =
             "https://cdn.jsdelivr.net/gh/xmlet/HtmlFlow@master/htmlflow-mfe-engine/dist/htmlflow-mfe-engine.js";
 
+    private static final String SHELL = "http://localhost:8080";
+    private static final String BIKE_SERVICE = "http://localhost:8081";
+    private static final String CART_SERVICE = "http://localhost:8082";
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response getHtml() {
@@ -29,7 +31,7 @@ public class SharedThemingExample {
                     .body()
                         .header().addAttr("class", "header_bar")
                             .div().img().addAttr("src", "bicycle.png").addAttr("style", "cursor: pointer; height:70px; width:70px;" ).addAttr("alt", "Bike Image").__().__()
-                            .div().h1().text("Bicycles").__().__()
+                            .div().h1().text("Bicycles — Shared theming").__().__()
                             .nav().addAttr("class", "nav-style")
                                 .div().img().addAttr("src", "shopping-cart.png").addAttr("alt", "Cart").__().__()
                                 .div().img().addAttr("src", "orders.png").addAttr("alt", "Orders").__().__()
@@ -40,23 +42,23 @@ public class SharedThemingExample {
                         .div().addAttr("style", "display: flex;justify-content: space-around;")
                             .div()
                                 .mfe((cfg)-> {
-                                    cfg.setMfeUrlResource("http://localhost:8081/bikes/view");
+                                    cfg.setMfeUrlResource(BIKE_SERVICE + "/bikes/view");
                                     cfg.setMfeName("mfe1");
                                     cfg.setMfeListeningEventName("triggerBikeEvent");
                                     cfg.setMfeTriggersEventName("triggerCartEvent");
-                                    cfg.setMfeScriptUrl("http://localhost:8081/js/mfe-bikes.js");
-                                    cfg.setMfeStylingUrl("http://localhost:8081/css/style.css");
-                                    cfg.setMfeSharedStylingUrl("http://localhost:8080/shared-theme.css");
+                                    cfg.setMfeScriptUrl(BIKE_SERVICE + "/js/mfe-bikes.js");
+                                    cfg.setMfeStylingUrl(BIKE_SERVICE + "/css/style.css");
+                                    cfg.setMfeSharedStylingUrl(SHELL + "/shared-theme.css");
                                 }).__()
                             .div()
                                 .mfe((cfg)-> {
-                                    cfg.setMfeUrlResource("http://localhost:8082/cart/view");
+                                    cfg.setMfeUrlResource(CART_SERVICE + "/cart/view");
                                     cfg.setMfeName("mfe2");
                                     cfg.setMfeListeningEventName("triggerCartEvent");
                                     cfg.setMfeTriggersEventName("triggerOrderEvent");
-                                    cfg.setMfeScriptUrl("http://localhost:8082/mfe-cart.js");
-                                    cfg.setMfeStylingUrl("http://localhost:8082/style.css");
-                                    cfg.setMfeSharedStylingUrl("http://localhost:8080/shared-theme.css");
+                                    cfg.setMfeScriptUrl(CART_SERVICE + "/mfe-cart.js");
+                                    cfg.setMfeStylingUrl(CART_SERVICE + "/style.css");
+                                    cfg.setMfeSharedStylingUrl(SHELL + "/shared-theme.css");
                                 }).__()
                         .__()
                     .footer().addAttr("class", "footer")
