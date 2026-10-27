@@ -2,26 +2,26 @@ console.log("Loading script of mfe2!")
 
 
 mfe('mfe2', ({ root, listenMfeEvent, reloadMfe }) => {
-    const checkoutButton = root?.querySelector('#triggerOrder');
-    const increaseQuantity = root?.querySelectorAll('#increaseQuantity');
-    const decreaseQuantity = root?.querySelectorAll('#decreaseQuantity');
-    const deleteCartItem = root?.querySelectorAll('#deleteCartItem');
-
-    if (checkoutButton) {
-        checkoutButton.addEventListener('click', () => {
-            window.location.href = '/checkout';
+    if (root && !root.cartClickHandlerBound) {
+        root.cartClickHandlerBound = true;
+        root.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            const id = button?.getAttribute('value');
+            switch (button?.id) {
+                case 'triggerOrder':
+                    window.location.href = '/checkout';
+                    break;
+                case 'increaseQuantity':
+                    handleQuantity('increase', id).then(() => reloadMfe());
+                    break;
+                case 'decreaseQuantity':
+                    handleQuantity('decrease', id).then(() => reloadMfe());
+                    break;
+                case 'deleteCartItem':
+                    deleteItem(id).then(() => reloadMfe());
+                    break;
+            }
         });
-    }
-    if (increaseQuantity && decreaseQuantity && deleteCartItem) {
-        increaseQuantity.forEach(button => button.addEventListener('click', () => {
-            handleQuantity('increase', button.getAttribute("value")).then(() => reloadMfe());
-        }));
-        decreaseQuantity.forEach(button => button.addEventListener('click', () => {
-            handleQuantity('decrease', button.getAttribute("value")).then(() => reloadMfe());
-        }));
-        deleteCartItem.forEach(button => button.addEventListener('click', () => {
-            deleteItem(button.getAttribute("value")).then(() => reloadMfe());
-        }));
     }
 
     listenMfeEvent((e) => {

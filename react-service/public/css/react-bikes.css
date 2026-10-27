@@ -1,0 +1,36 @@
+.bikes {
+    padding: 20px;
+}
+
+.bikes__search {
+    margin-bottom: 10px;
+}
+
+.bikes__list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.bike__box {
+    height: 250px;
+    width: 250px;
+    background-color: #dbe7d6;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 25px;
+}
+
+.bikes__error {
+    color: #b00020;
+}
+
+.bikes__footer {
+    margin-top: 12px;
+    font-size: 0.8em;
+    color: #20232a;
+    text-align: right;
+}

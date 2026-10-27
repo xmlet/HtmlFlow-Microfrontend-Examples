@@ -1,7 +1,5 @@
 package com.dev;
 
-
-
 import htmlflow.HtmlFlow;
 import htmlflow.HtmlView;
 import jakarta.ws.rs.GET;
@@ -17,6 +15,11 @@ public class WebshopExample {
     private static final String HTMLFLOW_MFE_ENGINE =
             "https://cdn.jsdelivr.net/gh/xmlet/HtmlFlow@master/htmlflow-mfe-engine/dist/htmlflow-mfe-engine.js";
 
+    private static final String SHELL = "http://localhost:8080";
+    private static final String BIKE_SERVICE = "http://localhost:8081";
+    private static final String CART_SERVICE = "http://localhost:8082";
+    private static final String ORDER_SERVICE = "http://localhost:8083";
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response getHtml() {
@@ -24,13 +27,13 @@ public class WebshopExample {
             page.html()
                     .head()
                     .script().attrSrc(HTMLFLOW_MFE_ENGINE).attrType(EnumTypeScriptType.MODULE).__()
-                    .link().addAttr("rel", "stylesheet").addAttr("href", "http://localhost:8080/style.css").__()
+                    .link().addAttr("rel", "stylesheet").addAttr("href", SHELL + "/style.css").__()
                     .__()
 
                     .body()
                     .header().addAttr("class", "header_bar")
                     .div().img().addAttr("src", "bicycle.png").addAttr("style", "cursor: pointer; height:70px; width:70px;" ).addAttr("alt", "Bike Image").__().__()
-                    .div().h1().text("Bicycles").__().__()
+                    .div().h1().text("Bicycles — Basic composition").__().__()
                     .nav().addAttr("class", "nav-style")
                     .div().img().addAttr("src", "shopping-cart.png").addAttr("alt", "Cart").__().__()
                     .div().img().addAttr("src", "orders.png").addAttr("alt", "Orders").__().__()
@@ -41,21 +44,21 @@ public class WebshopExample {
                     .div().addAttr("style", "display: flex;justify-content: space-around;")
                     .div().addAttr("style", "border: green 2px solid; margin: 4px")
                     .mfe((cfg)-> {
-                        cfg.setMfeUrlResource("http://localhost:8081/bikes/view");
+                        cfg.setMfeUrlResource(BIKE_SERVICE + "/bikes/view");
                         cfg.setMfeName("mfe1");
                         cfg.setMfeListeningEventName("triggerBikeEvent");
                         cfg.setMfeTriggersEventName("triggerCartEvent");
-                        cfg.setMfeScriptUrl("http://localhost:8081/js/mfe-bikes.js");
-                        cfg.setMfeStylingUrl("http://localhost:8081/css/style.css");
+                        cfg.setMfeScriptUrl(BIKE_SERVICE + "/js/mfe-bikes.js");
+                        cfg.setMfeStylingUrl(BIKE_SERVICE + "/css/style.css");
                     }).__()
                     .div().addAttr("style", "border: red 2px solid; margin: 4px")
                     .mfe((cfg)-> {
-                        cfg.setMfeUrlResource("http://localhost:8082/cart/view");
+                        cfg.setMfeUrlResource(CART_SERVICE + "/cart/view");
                         cfg.setMfeName("mfe2");
                         cfg.setMfeListeningEventName("triggerCartEvent");
                         cfg.setMfeTriggersEventName("triggerOrderEvent");
-                        cfg.setMfeScriptUrl("http://localhost:8082/mfe-cart.js");
-                        cfg.setMfeStylingUrl("http://localhost:8082/style.css");
+                        cfg.setMfeScriptUrl(CART_SERVICE + "/mfe-cart.js");
+                        cfg.setMfeStylingUrl(CART_SERVICE + "/style.css");
                     }).__()
                     .__()
                     .footer().addAttr("class", "footer")
@@ -78,13 +81,13 @@ public class WebshopExample {
             page.html()
                     .head()
                     .script().attrSrc(HTMLFLOW_MFE_ENGINE).attrType(EnumTypeScriptType.MODULE).__()
-                    .link().addAttr("rel", "stylesheet").addAttr("href", "http://localhost:8080/style.css").__()
+                    .link().addAttr("rel", "stylesheet").addAttr("href", SHELL + "/style.css").__()
                     .__()
 
                     .body()
                     .header().addAttr("class", "header_bar")
                     .div().img().addAttr("src", "bicycle.png").addAttr("style", "cursor: pointer; height:70px; width:70px;" ).addAttr("alt", "Bike Image").__().__()
-                    .div().h1().text("Bicycles").__().__()
+                    .div().h1().text("Bicycles — Checkout").__().__()
                     .nav().addAttr("class", "nav-style")
                     .div().img().addAttr("src", "shopping-cart.png").addAttr("alt", "Cart").__().__()
                     .div().img().addAttr("src", "orders.png").addAttr("alt", "Orders").__().__()
@@ -92,12 +95,11 @@ public class WebshopExample {
                     .__()
                     .__()
 
-
                     .div().addAttr("style", "border: blue 2px solid; margin: 4px")
                     .mfe((cfg)-> {
-                        cfg.setMfeUrlResource("http://localhost:8083/order/checkout/view");
+                        cfg.setMfeUrlResource(ORDER_SERVICE + "/order/checkout/view");
                         cfg.setMfeName("mfe3");
-                        cfg.setMfeScriptUrl("http://localhost:8083/mfe-order.js");
+                        cfg.setMfeScriptUrl(ORDER_SERVICE + "/mfe-order.js");
                     })
                     .__()
                     .footer().addAttr("class", "footer")
